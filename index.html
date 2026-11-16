@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Milano21 2026 – Settore CRA Abbiategrasso</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+:root{--ours:#1b8a3a;--other:#6b7280;--asa:#e8820c;--route:#1d4ed8;--bg:#f6f7f9;--card:#fff;--ink:#111827;--muted:#6b7280;--line:#e5e7eb}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.4}
+header{background:#0f2a4a;color:#fff;padding:16px 16px 14px}
+header h1{margin:0;font-size:20px}
+header p{margin:4px 0 0;opacity:.85;font-size:13px}
+main{max-width:900px;margin:0 auto;padding:12px}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+h2{font-size:17px;margin:0 0 10px}
+h3{margin:0;font-size:16px}
+.grid{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
+.grid b{color:var(--muted);font-weight:600}
+.warn{background:#fff7e6;border:1px solid #f5d08a;border-radius:8px;padding:8px 10px;font-size:13px;margin-top:10px}
+#overview{height:520px;border-radius:10px}
+.mini{height:300px;border-radius:10px;margin:10px 0}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:13px;margin:8px 0 0}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px;margin-right:4px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:6px 4px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase}
+tr.ours td{background:#eaf6ee;font-weight:600}
+.tag{display:inline-block;padding:1px 7px;border-radius:10px;font-size:12px;color:#fff;white-space:nowrap}
+.t-ours{background:var(--ours)}.t-other{background:var(--other)}.t-asa{background:var(--asa)}
+.card-head{display:flex;align-items:center;gap:10px}
+.num{background:var(--ours);color:#fff;font-weight:700;border-radius:8px;padding:4px 10px;font-size:18px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.btns a{flex:1 1 140px;text-align:center;text-decoration:none;background:#0f2a4a;color:#fff;padding:9px 10px;border-radius:8px;font-size:14px}
+.btns a.alt{background:#e5e7eb;color:#111827}
+.photo{border:2px dashed var(--line);border-radius:8px;padding:14px;text-align:center;color:var(--muted);font-size:13px;margin-top:10px}
+.lbl{background:none;border:none}
+.pin{display:flex;align-items:center;justify-content:center;border-radius:50%;color:#fff;font-weight:700;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.5);font-size:11px}
+.km{background:#fff;border:1px solid var(--route);color:var(--route);border-radius:6px;font-size:10px;font-weight:700;padding:0 3px;white-space:nowrap;transform:translate(-50%,-50%);display:inline-block}
+.toc{display:flex;flex-wrap:wrap;gap:6px}
+.toc a{background:var(--ours);color:#fff;text-decoration:none;border-radius:6px;padding:4px 9px;font-weight:700}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 0 30px}
+</style>
+</head>
+<body>
+<header>
+<h1>Milano21 Half Marathon 2026</h1>
+<p>Settore CRA Abbiategrasso · AREA_5 · Piazza della Scala → Piazza Duomo</p>
+</header>
+<main>
+
+<section>
+<h2>Informazioni di servizio</h2>
+<div class="grid">
+<b>Data</b><span>Domenica 22 novembre 2026</span>
+<b>Partenza gara</b><span>8:45 da Viale Eginardo</span>
+<b>Presidio</b><span>dalle <b>7:45</b> a fine manifestazione</span>
+<b>Radio</b><span><b>Canale 10</b> – diretta</span>
+<b>Gara nel settore</b><span>solo mezza maratona, dal <b>km 10,35</b> al <b>km 10,89</b> (la 10 km non passa di qui)</span>
+<b>Passaggi stimati</b><span>primi atleti ~9:15 · grosso del gruppo ~9:35–10:00 · ultimi ~10:15–10:45</span>
+<b>Nominativi</b><span>da definire</span>
+</div>
+<div class="warn"><b>Arrivate in anticipo:</b> 20.000 iscritti, traffico intenso. Per dubbi chiamate il referente d'area sabato 21 novembre oppure domenica prima della gara (es. posizionamento transenne). A gara partita il riferimento è il coordinatore, insieme al numero dell'assistenza sanitaria che verrà comunicato.</div>
+<div class="warn" style="background:#eef4ff;border-color:#b9cdf5">I passaggi e i km sono stime ricavate dal tracciato della mappa uMap organizzativa (scarto di qualche decina di metri). Il "lato" è inteso rispetto al senso di corsa.</div>
+</section>
+
+<section>
+<h2>Mappa del settore</h2>
+<div id="overview"></div>
+<div class="legend">
+<span><span class="dot" style="background:var(--ours)"></span>CRA Abbiategrasso</span>
+<span><span class="dot" style="background:var(--other)"></span>Altra associazione</span>
+<span><span class="dot" style="background:var(--asa)"></span>ASA (certificati)</span>
+<span><span class="dot" style="background:var(--route)"></span>Percorso con frecce e km</span>
+</div>
+</section>
+
+<section>
+<h2>Sequenza delle postazioni</h2>
+<p style="margin:0 0 8px;font-size:13px;color:var(--muted)">In ordine di passaggio dei runner. Le righe evidenziate sono le nostre.</p>
+<table id="seq"><thead><tr><th>Km</th><th>Post.</th><th>Chi</th><th>Note</th></tr></thead><tbody></tbody></table>
+</section>
+
+<section>
+<h2>Schede postazioni</h2>
+<div class="toc" id="toc"></div>
+</section>
+<div id="cards"></div>
+
+<footer>Dati: mappa organizzativa Milano21 (uMap) · Mappe © OpenStreetMap, Esri · Pony10</footer>
+</main>
+<script>
+const DATA = {"sector": [{"name": "91", "lat": 45.47229, "lng": 9.195186, "km": 9.667, "off": 4, "dir": 220, "ours": false, "type": "other", "side": "sul percorso"}, {"name": "92", "lat": 45.471878, "lng": 9.1948, "km": 9.717, "off": 4, "dir": 218, "ours": false, "type": "other", "side": "lato sinistro"}, {"name": "93", "lat": 45.4708, "lng": 9.193411, "km": 9.877, "off": 10, "dir": 215, "ours": false, "type": "other", "side": "lato destro"}, {"name": "ASA_37", "lat": 45.47001, "lng": 9.192885, "km": 9.971, "off": 8, "dir": 216, "ours": false, "type": "asa", "side": "lato sinistro"}, {"name": "94", "lat": 45.470101, "lng": 9.192697, "km": 9.972, "off": 10, "dir": 216, "ours": false, "type": "other", "side": "lato destro"}, {"name": "95", "lat": 45.46942, "lng": 9.192, "km": 10.065, "off": 7, "dir": 219, "ours": false, "type": "other", "side": "lato destro"}, {"name": "96", "lat": 45.469074, "lng": 9.191582, "km": 10.114, "off": 9, "dir": 216, "ours": false, "type": "other", "side": "lato destro"}, {"name": "97", "lat": 45.468385, "lng": 9.191107, "km": 10.197, "off": 6, "dir": 216, "ours": false, "type": "other", "side": "lato sinistro"}, {"name": "98", "lat": 45.468333, "lng": 9.190836, "km": 10.214, "off": 8, "dir": 216, "ours": false, "type": "other", "side": "lato destro"}, {"name": "ASA_38", "lat": 45.467471, "lng": 9.18994, "km": 10.332, "off": 8, "dir": 219, "ours": false, "type": "asa", "side": "lato destro"}, {"name": "99", "lat": 45.46726, "lng": 9.189937, "km": 10.35, "off": 7, "dir": 221, "ours": true, "type": "ours", "side": "lato sinistro", "pos": "Piazza della Scala", "task": "Controlla gli attraversamenti"}, {"name": "100", "lat": 45.467306, "lng": 9.189835, "km": 10.352, "off": 2, "dir": 221, "ours": false, "type": "other", "side": "sul percorso"}, {"name": "101", "lat": 45.466879, "lng": 9.189479, "km": 10.405, "off": 8, "dir": 221, "ours": true, "type": "ours", "side": "lato sinistro", "pos": "P.zza della Scala, di fronte a via Filodrammatici", "task": "Controlla gli attraversamenti"}, {"name": "ASA_39", "lat": 45.46695, "lng": 9.189337, "km": 10.406, "off": 6, "dir": 221, "ours": false, "type": "asa", "side": "lato destro"}, {"name": "102", "lat": 45.466504, "lng": 9.188905, "km": 10.465, "off": 4, "dir": 215, "ours": true, "type": "ours", "side": "lato destro", "pos": "Passaggio Giovanni Malagodi", "task": "Controlla il vicolo"}, {"name": "103", "lat": 45.466026, "lng": 9.188519, "km": 10.525, "off": 3, "dir": 210, "ours": true, "type": "ours", "side": "sul percorso", "pos": "Via Santa Margherita / Via Claudio Abbado", "task": "Manda i runner in via Claudio Abbado"}, {"name": "104", "lat": 45.465645, "lng": 9.188492, "km": 10.566, "off": 5, "dir": 180, "ours": true, "type": "ours", "side": "lato destro", "pos": "Via Tommaso Grossi", "task": "Controlla gli attraversamenti"}, {"name": "105", "lat": 45.465116, "lng": 9.188634, "km": 10.624, "off": 6, "dir": 180, "ours": false, "type": "other", "side": "lato sinistro"}, {"name": "107", "lat": 45.464649, "lng": 9.188529, "km": 10.668, "off": 8, "dir": 180, "ours": true, "type": "ours", "side": "lato destro", "pos": "Inizio Piazza Duomo", "task": "Controlla gli attraversamenti pedonali"}, {"name": "ASA_40", "lat": 45.464719, "lng": 9.188379, "km": 10.668, "off": 14, "dir": 180, "ours": false, "type": "asa", "side": "lato destro"}, {"name": "106", "lat": 45.464713, "lng": 9.188626, "km": 10.674, "off": 0, "dir": 94, "ours": true, "type": "ours", "side": "sul percorso", "pos": "Inizio Piazza Duomo", "task": "Controlla gli attraversamenti pedonali"}, {"name": "108", "lat": 45.464664, "lng": 9.189999, "km": 10.781, "off": 2, "dir": 90, "ours": true, "type": "ours", "side": "sul percorso", "pos": "Piazza Duomo, davanti alla Galleria Vittorio Emanuele", "task": "Controlla gli attraversamenti pedonali"}, {"name": "109", "lat": 45.464521, "lng": 9.189999, "km": 10.781, "off": 14, "dir": 90, "ours": false, "type": "other", "side": "lato destro"}, {"name": "110", "lat": 45.464676, "lng": 9.191437, "km": 10.892, "off": 3, "dir": 89, "ours": true, "type": "ours", "side": "sul percorso", "pos": "Piazza Duomo, davanti a Via San Raffaele", "task": "Controlla gli attraversamenti pedonali"}, {"name": "111", "lat": 45.464537, "lng": 9.191442, "km": 10.892, "off": 12, "dir": 89, "ours": true, "type": "ours", "side": "lato destro", "pos": "Piazza Duomo, davanti a Via San Raffaele", "task": "Controlla gli attraversamenti pedonali"}, {"name": "113", "lat": 45.464617, "lng": 9.192861, "km": 11.001, "off": 11, "dir": 83, "ours": false, "type": "other", "side": "lato destro"}, {"name": "112", "lat": 45.464742, "lng": 9.192861, "km": 11.003, "off": 3, "dir": 83, "ours": false, "type": "other", "side": "sul percorso"}, {"name": "115", "lat": 45.464986, "lng": 9.194339, "km": 11.12, "off": 9, "dir": 68, "ours": false, "type": "other", "side": "lato destro"}, {"name": "114", "lat": 45.465097, "lng": 9.194288, "km": 11.121, "off": 4, "dir": 68, "ours": false, "type": "other", "side": "lato sinistro"}, {"name": "116", "lat": 45.465528, "lng": 9.195833, "km": 11.25, "off": 4, "dir": 63, "ours": false, "type": "other", "side": "sul percorso"}, {"name": "117", "lat": 45.46547, "lng": 9.195927, "km": 11.254, "off": 5, "dir": 63, "ours": false, "type": "other", "side": "lato destro"}, {"name": "118", "lat": 45.46607, "lng": 9.197155, "km": 11.37, "off": 3, "dir": 46, "ours": false, "type": "other", "side": "sul percorso"}, {"name": "119", "lat": 45.466004, "lng": 9.197236, "km": 11.37, "off": 7, "dir": 46, "ours": false, "type": "other", "side": "lato destro"}, {"name": "121", "lat": 45.4667, "lng": 9.197845, "km": 11.459, "off": 7, "dir": 17, "ours": false, "type": "other", "side": "lato destro"}, {"name": "120", "lat": 45.466801, "lng": 9.197724, "km": 11.467, "off": 6, "dir": 17, "ours": false, "type": "other", "side": "lato sinistro"}, {"name": "122", "lat": 45.468374, "lng": 9.198786, "km": 11.657, "off": 10, "dir": 32, "ours": false, "type": "other", "side": "lato sinistro"}, {"name": "ASA_35", "lat": 45.468686, "lng": 9.199312, "km": 11.708, "off": 7, "dir": 32, "ours": false, "type": "asa", "side": "lato destro"}], "course": [[45.470518, 9.197282, 9.4156], [45.471255, 9.196394, 9.522], [45.471772, 9.195788, 9.5958], [45.472254, 9.195181, 9.6667], [45.47191, 9.194763, 9.7165], [45.471511, 9.194312, 9.7727], [45.470973, 9.193749, 9.8463], [45.470414, 9.193186, 9.9217], [45.47004, 9.192792, 9.973], [45.469982, 9.192751, 9.9801], [45.469433, 9.192134, 10.0572], [45.46903, 9.191676, 10.114], [45.468272, 9.190895, 10.2171], [45.467441, 9.190034, 10.3304], [45.467353, 9.189932, 10.3429], [45.466895, 9.189366, 10.4097], [45.466361, 9.18883, 10.4818], [45.466023, 9.188551, 10.5248], [45.464713, 9.188561, 10.6693], [45.464646, 9.18987, 10.7708], [45.464646, 9.19119, 10.8728], [45.464661, 9.192199, 10.9509], [45.464736, 9.193089, 11.0202], [45.464999, 9.194087, 11.1027], [45.465255, 9.194977, 11.177], [45.465466, 9.19576, 11.2419], [45.465887, 9.196941, 11.3444], [45.46612, 9.197284, 11.3813], [45.466233, 9.197391, 11.3963], [45.466372, 9.197617, 11.4195], [45.466801, 9.197799, 11.4688], [45.467281, 9.19807, 11.5258], [45.467704, 9.198373, 11.578], [45.468097, 9.198695, 11.6279], [45.468738, 9.199256, 11.7109], [45.469314, 9.199819, 11.7879], [45.469969, 9.200436, 11.8744], [45.470386, 9.200913, 11.9334]], "full": [[45.477427, 9.151587], [45.476735, 9.15155], [45.476116, 9.151515], [45.47526, 9.151472], [45.474549, 9.151442], [45.474327, 9.151432], [45.474083, 9.151475], [45.474045, 9.151488], [45.473849, 9.151697], [45.473806, 9.151748], [45.47372, 9.151863], [45.473667, 9.151992], [45.473627, 9.152134], [45.473599, 9.152303], [45.473564, 9.15373], [45.473515, 9.155232], [45.473479, 9.156726], [45.473437, 9.158379], [45.473432, 9.158733], [45.473453, 9.158942], [45.473479, 9.159079], [45.47352, 9.159231], [45.47358, 9.159374], [45.473682, 9.159513], [45.473787, 9.159623], [45.473887, 9.159693], [45.473977, 9.15973], [45.474355, 9.159787], [45.474906, 9.159811], [45.475749, 9.159864], [45.476475, 9.159899], [45.477327, 9.159958], [45.478077, 9.160007], [45.479243, 9.160055], [45.479589, 9.160071], [45.479796, 9.159988], [45.479983, 9.159899], [45.480095, 9.159808], [45.48021, 9.159653], [45.480267, 9.159502], [45.480293, 9.159358], [45.480321, 9.158612], [45.480364, 9.158196], [45.480389, 9.157979], [45.480408, 9.157354], [45.480432, 9.157214], [45.480658, 9.156748], [45.480803, 9.156536], [45.480929, 9.156294], [45.481171, 9.156345], [45.481269, 9.156418], [45.481826, 9.157265], [45.482358, 9.1581], [45.482937, 9.159014], [45.48346, 9.159805], [45.483894, 9.160463], [45.484289, 9.161088], [45.483759, 9.161788], [45.483302, 9.16237], [45.482749, 9.163129], [45.482123, 9.163976], [45.481466, 9.164824], [45.4809, 9.165567], [45.480473, 9.166119], [45.479872, 9.166903], [45.479191, 9.167798], [45.478516, 9.168697], [45.477953, 9.169435], [45.477726, 9.169177], [45.477588, 9.16904], [45.477449, 9.168909], [45.477239, 9.168748], [45.476988, 9.1686], [45.476789, 9.168512], [45.476603, 9.168445], [45.476443, 9.168407], [45.476281, 9.168394], [45.476052, 9.168383], [45.475913, 9.168389], [45.475809, 9.168402], [45.475664, 9.168437], [45.475488, 9.168493], [45.47532, 9.168574], [45.475164, 9.168667], [45.475049, 9.16874], [45.47492, 9.168842], [45.474773, 9.16896], [45.474647, 9.169099], [45.474515, 9.169263], [45.474243, 9.169598], [45.474024, 9.16985], [45.473861, 9.170049], [45.473496, 9.17051], [45.473368, 9.170701], [45.473289, 9.170821], [45.473185, 9.17098], [45.473024, 9.171293], [45.472834, 9.171693], [45.472768, 9.171892], [45.472674, 9.17205], [45.472582, 9.172152], [45.472448, 9.172219], [45.472309, 9.172256], [45.472256, 9.172275], [45.472113, 9.17239], [45.47198, 9.172538], [45.471854, 9.172672], [45.471666, 9.172924], [45.471511, 9.173136], [45.471274, 9.173471], [45.47119, 9.173616], [45.47113, 9.173804], [45.471079, 9.174059], [45.471009, 9.174163], [45.470846, 9.174276], [45.47075, 9.174356], [45.470603, 9.174474], [45.470537, 9.174539], [45.470411, 9.17467], [45.469843, 9.17537], [45.469768, 9.175472], [45.469597, 9.1757], [45.469393, 9.175993], [45.469322, 9.176089], [45.468615, 9.177033], [45.468506, 9.177221], [45.468897, 9.177876], [45.469066, 9.178101], [45.469721, 9.177259], [45.470394, 9.176395], [45.470691, 9.176728], [45.470985, 9.177108], [45.471952, 9.178632], [45.472512, 9.179592], [45.47252, 9.179603], [45.472559, 9.179638], [45.472561, 9.179638], [45.472574, 9.179648], [45.472601, 9.179659], [45.472533, 9.179624], [45.472546, 9.17963], [45.472648, 9.179699], [45.473167, 9.180488], [45.473738, 9.181389], [45.473787, 9.18155], [45.473885, 9.181893], [45.47548, 9.18162], [45.476804, 9.181389], [45.477598, 9.18126], [45.478335, 9.181539], [45.479952, 9.182097], [45.480697, 9.18236], [45.480866, 9.182757], [45.481032, 9.18346], [45.480464, 9.186469], [45.480283, 9.187548], [45.480039, 9.18943], [45.47996, 9.190305], [45.479741, 9.19181], [45.479551, 9.192325], [45.47945, 9.19336], [45.479395, 9.193805], [45.478461, 9.195839], [45.478229, 9.196321], [45.477966, 9.196922], [45.477782, 9.197236], [45.477483, 9.197882], [45.477411, 9.19803], [45.477046, 9.198609], [45.476369, 9.199993], [45.475803, 9.201238], [45.475113, 9.202753], [45.474509, 9.204121], [45.474402, 9.204325], [45.474259, 9.20455], [45.474122, 9.204765], [45.473272, 9.203901], [45.472606, 9.20322], [45.471859, 9.20245], [45.471208, 9.20175], [45.470601, 9.201109], [45.470016, 9.200417], [45.469081, 9.19954], [45.468802, 9.199261], [45.469434, 9.198604], [45.469781, 9.198204], [45.470518, 9.197282], [45.471255, 9.196394], [45.471772, 9.195788], [45.472254, 9.195181], [45.47191, 9.194763], [45.471511, 9.194312], [45.470973, 9.193749], [45.470414, 9.193186], [45.47004, 9.192792], [45.469982, 9.192751], [45.469433, 9.192134], [45.46903, 9.191676], [45.468272, 9.190895], [45.467441, 9.190034], [45.467353, 9.189932], [45.466895, 9.189366], [45.466361, 9.18883], [45.466023, 9.188551], [45.464713, 9.188561], [45.464646, 9.18987], [45.464646, 9.19119], [45.464661, 9.192199], [45.464736, 9.193089], [45.464999, 9.194087], [45.465255, 9.194977], [45.465466, 9.19576], [45.465887, 9.196941], [45.46612, 9.197284], [45.466233, 9.197391], [45.466372, 9.197617], [45.466801, 9.197799], [45.467281, 9.19807], [45.467704, 9.198373], [45.468097, 9.198695], [45.468738, 9.199256], [45.469314, 9.199819], [45.469969, 9.200436], [45.470386, 9.200913], [45.470651, 9.201216], [45.471334, 9.201938], [45.472013, 9.202662], [45.472504, 9.203164], [45.4731, 9.203767], [45.473644, 9.204328], [45.474101, 9.2048], [45.473983, 9.205063], [45.473809, 9.205315], [45.473723, 9.205336], [45.473281, 9.205336], [45.4727, 9.205304], [45.472267, 9.205288], [45.471968, 9.205299], [45.471507, 9.205317], [45.471058, 9.20536], [45.470678, 9.205393], [45.470571, 9.205406], [45.47048, 9.20543], [45.469777, 9.205508], [45.469156, 9.205578], [45.46865, 9.205637], [45.468447, 9.205658], [45.467973, 9.205731], [45.467625, 9.205779], [45.467126, 9.20579], [45.466641, 9.205824], [45.466402, 9.205849], [45.465629, 9.205959], [45.464677, 9.206095], [45.463637, 9.20624], [45.463278, 9.206307], [45.463118, 9.206439], [45.463041, 9.206471], [45.462186, 9.20661], [45.461852, 9.206672], [45.461528, 9.206793], [45.461048, 9.206836], [45.460875, 9.20675], [45.460608, 9.206693], [45.460004, 9.20642], [45.45941, 9.205956], [45.458638, 9.205293], [45.458098, 9.204864], [45.457583, 9.204583], [45.457163, 9.204333], [45.456448, 9.203907], [45.455797, 9.203534], [45.455161, 9.203153], [45.454544, 9.202777], [45.453933, 9.202439], [45.453632, 9.202338], [45.452821, 9.202093], [45.452683, 9.202051], [45.452574, 9.201973], [45.452209, 9.201538], [45.452048, 9.201334], [45.451982, 9.201192], [45.451936, 9.20097], [45.451929, 9.200806], [45.452031, 9.199521], [45.452087, 9.198733], [45.452079, 9.19822], [45.452036, 9.196815], [45.452034, 9.196209], [45.452019, 9.195037], [45.452017, 9.19373], [45.45201, 9.19266], [45.452002, 9.19148], [45.452004, 9.190249], [45.452, 9.189632], [45.452138, 9.188331], [45.452166, 9.187934], [45.452382, 9.186808], [45.452501, 9.185169], [45.452539, 9.184608], [45.452651, 9.183297], [45.452783, 9.181894], [45.452874, 9.181231], [45.453, 9.180705], [45.453081, 9.180161], [45.453094, 9.179699], [45.453077, 9.179192], [45.453051, 9.178774], [45.453037, 9.178365], [45.452956, 9.177617], [45.452941, 9.177568], [45.452944, 9.177464], [45.452964, 9.177351], [45.452994, 9.177262], [45.453126, 9.177068], [45.453779, 9.17625], [45.454354, 9.175529], [45.455082, 9.174569], [45.455335, 9.174215], [45.455515, 9.174086], [45.455854, 9.173595], [45.456362, 9.172868], [45.456766, 9.172176], [45.457205, 9.171449], [45.457536, 9.170913], [45.458064, 9.170052], [45.458659, 9.169105], [45.45919, 9.168265], [45.459916, 9.167142], [45.460181, 9.166718], [45.460621, 9.165881], [45.461063, 9.165058], [45.461233, 9.164738], [45.46133, 9.164543], [45.46146, 9.164414], [45.461596, 9.16436], [45.462017, 9.164492], [45.462267, 9.164585], [45.462416, 9.164679], [45.46267, 9.16491], [45.462864, 9.16498], [45.463541, 9.1652], [45.463959, 9.165339], [45.464813, 9.165613], [45.465542, 9.165851], [45.466188, 9.166058], [45.466861, 9.166283], [45.467279, 9.166425], [45.467322, 9.166444], [45.467435, 9.166597], [45.467486, 9.16708], [45.467531, 9.168223], [45.467572, 9.168268], [45.467629, 9.168308], [45.467717, 9.168311], [45.467851, 9.168147], [45.468451, 9.167362], [45.469026, 9.166611], [45.469613, 9.165851], [45.470208, 9.165039], [45.470712, 9.164363], [45.47137, 9.163513], [45.471793, 9.162965], [45.471962, 9.162745], [45.472341, 9.162268], [45.47298, 9.161423], [45.473548, 9.160653], [45.473858, 9.160235], [45.473858, 9.160122], [45.473843, 9.160007], [45.473657, 9.159715], [45.473556, 9.159588], [45.473448, 9.159414], [45.473386, 9.159154], [45.473379, 9.158905], [45.473386, 9.158703], [45.473416, 9.157217], [45.473443, 9.156222], [45.47348, 9.155061], [45.473525, 9.153497], [45.473552, 9.152352], [45.473567, 9.152207], [45.47361, 9.152027], [45.473676, 9.151834], [45.473781, 9.151714], [45.474031, 9.151461], [45.474203, 9.151357], [45.474347, 9.151295], [45.475058, 9.151346], [45.475899, 9.151402], [45.476713, 9.151435], [45.477413, 9.151483]], "scale": 0.9916264401998985};
+const START = {h:8,m:45};
+const C = DATA.course; // [lat,lng,km]
+
+const COL={ours:'#1b8a3a',other:'#6b7280',asa:'#e8820c'};
+const toRad=d=>d*Math.PI/180;
+function dist(a,b){const R=6371000,dl=toRad(b[1]-a[1]),dp=toRad(b[0]-a[0]);const h=Math.sin(dp/2)**2+Math.cos(toRad(a[0]))*Math.cos(toRad(b[0]))*Math.sin(dl/2)**2;return 2*R*Math.asin(Math.sqrt(h));}
+function bearing(a,b){const la1=toRad(a[0]),la2=toRad(b[0]),dl=toRad(b[1]-a[1]);const x=Math.sin(dl)*Math.cos(la2),y=Math.cos(la1)*Math.sin(la2)-Math.sin(la1)*Math.cos(la2)*Math.cos(dl);return (Math.atan2(x,y)*180/Math.PI+360)%360;}
+function pointAtKm(km){for(let i=0;i<C.length-1;i++){if(C[i][2]<=km&&C[i+1][2]>=km){const t=(km-C[i][2])/((C[i+1][2]-C[i][2])||1);return {ll:[C[i][0]+(C[i+1][0]-C[i][0])*t,C[i][1]+(C[i+1][1]-C[i][1])*t],dir:bearing(C[i],C[i+1])};}}return null;}
+const card=d=>['N','NE','E','SE','S','SO','O','NO'][Math.round(d/45)%8];
+const dirTxt=d=>({N:'verso nord',NE:'verso nord-est',E:'verso est',SE:'verso sud-est',S:'verso sud',SO:'verso sud-ovest',O:'verso ovest',NO:'verso nord-ovest'})[card(d)];
+const fromTxt=d=>({N:'da sud',NE:'da sud-ovest',E:'da ovest',SE:'da nord-ovest',S:'da nord',SO:'da nord-est',O:'da est',NO:'da sud-est'})[card(d)];
+function hhmm(min){const t=START.h*60+START.m+Math.round(min);return Math.floor(t/60)+':'+String(t%60).padStart(2,'0');}
+function times(km){return {first:hhmm(km*2.9),mid:hhmm(km*5.5),last:hhmm(km*8.5+15)};}
+function baseLayers(){return {
+ 'Mappa':L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:20,maxNativeZoom:19,attribution:'© OpenStreetMap'}),
+ 'Satellite':L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:20,maxNativeZoom:19,attribution:'© Esri'})};}
+function arrowIcon(deg,size,color){return L.divIcon({className:'lbl',iconSize:[size,size],iconAnchor:[size/2,size/2],html:`<svg width="${size}" height="${size}" viewBox="0 0 20 20" style="transform:rotate(${deg}deg)"><path d="M10 2 L17 16 L10 12 L3 16 Z" fill="${color}" stroke="#fff" stroke-width="1.5"/></svg>`});}
+function pinIcon(p,big){const s=big?(p.name.length>3?40:32):(p.name.length>3?34:24);const txt=p.name.replace('ASA_','A');return L.divIcon({className:'lbl',iconSize:[s,s],iconAnchor:[s/2,s/2],html:`<div class="pin" style="width:${s}px;height:${s}px;background:${COL[p.type]};font-size:${big?13:10}px">${txt}</div>`});}
+function drawRoute(map,kmFrom,kmTo,arrowStep,kmStep,arrowSize,kmOff=0){
+ const pts=C.filter(c=>c[2]>=kmFrom-0.02&&c[2]<=kmTo+0.02).map(c=>[c[0],c[1]]);
+ L.polyline(pts,{color:'#fff',weight:10,opacity:.9}).addTo(map);
+ L.polyline(pts,{color:'#1d4ed8',weight:6,opacity:.9}).addTo(map);
+ for(let k=Math.ceil(kmFrom/arrowStep)*arrowStep;k<=kmTo;k+=arrowStep){const q=pointAtKm(k);if(q)L.marker(q.ll,{icon:arrowIcon(q.dir,arrowSize,'#1d4ed8'),interactive:false,zIndexOffset:-100}).addTo(map);}
+ for(let k=Math.ceil(kmFrom/kmStep-1e-9)*kmStep;k<=kmTo+1e-9;k+=kmStep){const q=pointAtKm(k);if(q)L.marker(q.ll,{icon:L.divIcon({className:'lbl',iconSize:[0,0],html:(()=>{const n=toRad(q.dir-90),o=kmOff;return `<span class="km" style="transform:translate(calc(-50% + ${Math.sin(n)*o}px),calc(-50% + ${-Math.cos(n)*o}px))">km ${k.toFixed(kmStep<0.1?2:1).replace('.',',')}</span>`})()}),interactive:false,zIndexOffset:-50}).addTo(map);}
+}
+function who(p){return p.type==='ours'?'CRA Abbiategrasso':p.type==='asa'?'ASA (altra assoc.)':'Altra associazione';}
+function addPosts(map,list,big,focus){list.forEach(p=>{const m=L.marker([p.lat,p.lng],{icon:pinIcon(p,big||p.name===focus),zIndexOffset:p.name===focus?1000:(p.ours?500:0)}).addTo(map);m.bindPopup(`<b>${p.name}</b> – ${who(p)}<br>km ${p.km.toFixed(2).replace('.',',')}${p.pos?'<br>'+p.pos:''}`);});}
+const dtxt=d=>Math.round(d*1000)<15?'stesso punto':Math.round(d*1000)+' m';
+function sideTxt(p){return p.off>=6&&p.side!=='sul percorso'?p.side:'a bordo percorso';}
+
+// Overview
+DATA.sector.sort((a,b)=>Math.round(a.km*100)-Math.round(b.km*100)||(parseInt(a.name.replace(/\D/g,''))-parseInt(b.name.replace(/\D/g,''))));
+const OURS = DATA.sector.filter(p=>p.ours);
+const sec=DATA.sector.filter(p=>p.km>=10.15&&p.km<=11.05);
+const ov=L.map('overview',{zoomControl:true});
+const bl=baseLayers();bl['Mappa'].addTo(ov);L.control.layers(bl,null,{collapsed:true}).addTo(ov);
+drawRoute(ov,10.1,11.1,0.05,0.1,16,-40);
+addPosts(ov,sec,false);
+ov.fitBounds(L.latLngBounds(OURS.map(p=>[p.lat,p.lng])).pad(0.15));
+
+// Sequence table
+const tb=document.querySelector('#seq tbody');let lastOurs=null;
+sec.forEach(p=>{const tr=document.createElement('tr');if(p.ours)tr.className='ours';
+ let note=p.ours?p.task:'';
+ if(p.ours&&lastOurs){const m=Math.round((p.km-lastOurs.km)*1000);note+=m<15?` · stesso punto della ${lastOurs.name} (lato opposto)`:` · ${m} m dalla ${lastOurs.name}`;} if(p.ours)lastOurs=p;
+ tr.innerHTML=`<td>${p.km.toFixed(2).replace('.',',')}</td><td><b>${p.name}</b></td><td><span class="tag t-${p.type}">${p.type==='ours'?'CRA':p.type==='asa'?'ASA':'Altra'}</span></td><td>${note}</td>`;
+ tr.style.cursor='pointer';tr.onclick=()=>{ov.setView([p.lat,p.lng],19);document.getElementById('overview').scrollIntoView({behavior:'smooth'});};
+ tb.appendChild(tr);});
+
+// Cards
+const cards=document.getElementById('cards'),toc=document.getElementById('toc');
+OURS.forEach((p,i)=>{
+ const q=pointAtKm(p.km)||{dir:p.dir};const dir=q.dir;
+ const t=times(p.km);
+ const near=DATA.sector.filter(o=>o!==p&&Math.abs(o.km-p.km)<=0.07&&!o.ours);
+ const sv=h=>`https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${p.lat},${p.lng}&heading=${Math.round(h)}&pitch=0&fov=90`;
+ const prev=i>0?OURS[i-1]:null,next=i<OURS.length-1?OURS[i+1]:null;
+ toc.insertAdjacentHTML('beforeend',`<a href="#p${p.name}">${p.name}</a>`);
+ cards.insertAdjacentHTML('beforeend',`<section id="p${p.name}">
+ <div class="card-head"><span class="num">${p.name}</span><div><h3>${p.pos}</h3><div style="color:var(--muted);font-size:13px">km ${p.km.toFixed(2).replace('.',',')} · ${sideTxt(p)}</div></div></div>
+ <div class="mini" id="m${p.name}"></div>
+ <div class="grid">
+ <b>Compito</b><span>${p.task}</span>
+ <b>Direzione</b><span>i runner arrivano <b>${fromTxt(dir)}</b> e vanno <b>${dirTxt(dir)}</b></span>
+ <b>Passaggi</b><span>primi ~${t.first} · grosso ~${t.mid} · ultimi ~${t.last}</span>
+ <b>Vicini</b><span>${near.length?near.map(o=>`${o.name} (${who(o)})`).join(', '):'nessun\'altra postazione a meno di 70 m'}</span>
+ <b>Prec./Succ.</b><span>${prev?`← ${prev.name} (${dtxt(p.km-prev.km)})`:'prima della nostra zona'} · ${next?`${next.name} (${dtxt(next.km-p.km)}) →`:'ultima della nostra zona'}</span>
+ <b>Coordinate</b><span>${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}</span>
+ </div>
+ <div class="btns">
+ <a href="${sv((dir+180)%360)}" target="_blank" rel="noopener">Street View · verso i runner in arrivo</a>
+ <a href="${sv(dir)}" target="_blank" rel="noopener">Street View · direzione di gara</a>
+ <a class="alt" href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}" target="_blank" rel="noopener">Apri in Google Maps</a>
+ </div>
+ <div class="photo">Foto Street View della postazione: da aggiungere</div>
+ </section>`);
+});
+// lazy mini maps
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);const id=e.target.id.slice(1);const p=OURS.find(o=>o.name===id);
+ const m=L.map(e.target,{zoomControl:true,scrollWheelZoom:false});const b=baseLayers();b['Mappa'].addTo(m);L.control.layers(b,null,{collapsed:true}).addTo(m);
+ drawRoute(m,p.km-0.15,p.km+0.15,0.015,0.05,14,34);
+ addPosts(m,DATA.sector.filter(o=>Math.abs(o.km-p.km)<0.15),false,p.name);
+ m.setView([p.lat,p.lng],19);}),{rootMargin:'200px'});
+document.querySelectorAll('.mini').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
